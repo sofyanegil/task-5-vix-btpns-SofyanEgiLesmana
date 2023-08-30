@@ -10,3 +10,10 @@ type IUserUseCase interface {
 	Update(u *models.User, userID string) (user *models.User, err error)
 	Delete(userID string) (err error)
 }
+
+type IPhotoUseCase interface {
+	Create(p *models.Photo, userID string) (photo *models.Photo, err error)
+	GetAll() (photos *[]models.Photo, err error)
+	Update(p *models.Photo, photoID string) (product *models.Photo, err error)
+	Delete(photoID string) (err error)
+}

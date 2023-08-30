@@ -27,5 +27,18 @@ func SetupRouter() *gin.Engine {
 		userRouter.DELETE("/:userID", middlewares.UserAuthorization(), userController.Delete)
 	}
 
+	photoRepository := repository.NewPhotoRepository()
+	photoUsecase := usecase.NewPhotoUsecase(photoRepository, db)
+	photoController := controllers.NewPhotoController(photoUsecase, db)
+
+	photoRouter := r.Group("/photos")
+	{
+		photoRouter.Use(middlewares.Authentication())
+		photoRouter.POST("/", photoController.Create)
+		photoRouter.GET("/", photoController.GetAll)
+		photoRouter.PUT("/:photoID", middlewares.PhotoAuthorization(), photoController.Update)
+		photoRouter.DELETE("/:photoID", middlewares.PhotoAuthorization(), photoController.Delete)
+	}
+
 	return r
 }
